@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Finwise Lab | Understand your money</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=DM+Sans:wght@400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f7f4;--card:#fff;--ink:#3a2a00;--mute:#5a6e63;--line:#dce6df;--pri:#25706a;--sun:#ffcb47;--mint:#19d3a2;--pink:#ff4d8d;--org:#ff8a2b;--soft:#e8f2ec;--cy:#3b8a80;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#08150f;--card:#0f2119;--ink:#ecf5ef;--mute:#9db5a6;--line:#1f3a2d;--pri:#3ecf93;--sun:#ffd45e;--mint:#3ddc9f;--pink:#ff7a9e;--org:#ffa04d;--soft:#153024;--cy:#3ecf93}}
+:root[data-theme="dark"]{--bg:#08150f;--card:#0f2119;--ink:#ecf5ef;--mute:#9db5a6;--line:#1f3a2d;--pri:#3ecf93;--sun:#ffd45e;--mint:#3ddc9f;--pink:#ff7a9e;--org:#ffa04d;--soft:#153024;--cy:#3ecf93}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.5}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.w{max-width:640px;margin:0 auto;padding:0 16px}
+.logo{font-weight:800;font-size:22px;padding:10px 0 2px;display:block;cursor:pointer;color:var(--pri)}
+nav{display:flex;gap:6px;overflow-x:auto;padding:6px 0 10px}
+nav button{flex:none;font:inherit;font-size:14px;font-weight:600;padding:6px 13px;border:1px solid var(--line);border-radius:99px;background:var(--card);color:var(--ink);cursor:pointer}
+nav button[aria-current=page]{background:var(--pri);color:#fff;border-color:var(--pri)}
+:focus-visible{outline:3px solid var(--org);outline-offset:2px}
+main{padding:20px 0}
+h1{font-size:30px;line-height:1.1;font-weight:800;margin:0 0 6px}
+h2{font-size:19px;margin:0 0 10px}
+.sub{color:var(--mute);margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.hero{position:relative;overflow:hidden;background:var(--pri);color:#fff;border-radius:20px;padding:26px 18px;margin-bottom:14px}
+.hero::after{content:"";position:absolute;right:-50px;top:-50px;width:170px;height:170px;border-radius:50%;background:var(--sun);opacity:.9}
+.hero>*{position:relative;z-index:1}
+.hero h1{font-size:clamp(34px,10vw,50px);line-height:1.02;letter-spacing:-.02em;max-width:85%}
+.hero p{margin:0 0 14px;opacity:.9}
+.hn{font-size:clamp(52px,17vw,88px);font-weight:800;line-height:1;margin:4px 0;color:var(--sun);font-variant-numeric:tabular-nums}
+.btn{display:inline-block;font:inherit;font-weight:700;padding:11px 18px;border-radius:12px;border:2px solid var(--pri);background:var(--pri);color:#fff;cursor:pointer;text-decoration:none}
+.hero .btn{background:var(--sun);color:#3a2a00;border-color:var(--sun)}
+.btn.o{background:transparent;color:var(--pri)}
+.g{display:grid;gap:10px;grid-template-columns:1fr}
+@media (min-width:520px){.g{grid-template-columns:1fr 1fr}}
+.tile{border:1px solid var(--line);border-top:5px solid var(--c,var(--pri));border-radius:12px;padding:12px;background:var(--card);cursor:pointer;text-align:left;font:inherit;color:var(--ink)}
+.tile b{display:block}.tile span{color:var(--mute);font-size:14px}
+.tag{display:inline-block;font-size:12px;background:var(--sun);color:#3a2a00;border-radius:99px;padding:1px 9px;margin-left:6px;font-weight:700}
+label{display:block;font-weight:600;margin-bottom:6px}
+.val{float:right;font-weight:800;color:var(--pri)}
+input[type=number],input[type=text]{width:100%;font:inherit;font-size:17px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--pri)}
+.r{margin-bottom:14px}
+.seg{display:flex;gap:6px;margin-bottom:14px}
+.seg button{flex:1;font:inherit;font-size:14px;font-weight:700;padding:10px 4px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--pri);color:#fff;border-color:var(--pri)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chip{font:inherit;font-size:14px;padding:7px 13px;border-radius:99px;border:1px solid var(--line);background:var(--soft);color:var(--ink);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--pri);color:#fff;border-color:var(--pri)}
+.opt{display:block;width:100%;margin-bottom:8px;font:inherit;font-size:16px;padding:13px;border-radius:12px;border:1px solid var(--line);background:var(--soft);color:var(--ink);cursor:pointer;text-align:left}
+.opt:hover{border-color:var(--pri)}
+.big{font-size:34px;font-weight:800;line-height:1.1;margin:0 0 4px}
+.rule{border-left:5px solid var(--sun);padding-left:12px;font-weight:700;margin-top:14px}
+.note{color:var(--mute);font-size:13px;margin-top:10px}
+.split{display:flex;height:22px;border-radius:8px;overflow:hidden;margin:10px 0 6px}
+.split i{display:block;transition:width .35s}.a{background:var(--pri)}.b{background:var(--mint)}
+.leg{display:flex;justify-content:space-between;font-size:14px;color:var(--mute)}
+.good{color:var(--mint)}.bad{color:var(--pink)}.warn{color:var(--org)}
+.it{padding:10px 0;border-top:1px solid var(--line)}.it:first-child{border-top:0}
+.it div{display:flex;justify-content:space-between;font-size:15px}
+.mb{height:9px;background:var(--soft);border-radius:5px;overflow:hidden;margin-top:5px}.mb i{display:block;height:100%;background:var(--pri);transition:width .35s}
+.mb.t i{background:var(--org)}
+table{width:100%;border-collapse:collapse;font-size:15px}td,th{padding:8px 4px;border-top:1px solid var(--line);text-align:left}th{border-top:0;color:var(--mute);font-weight:600}
+.course{border:2px dashed var(--pri);border-radius:14px;padding:12px;margin-bottom:10px}
+.steps{display:flex;gap:8px;font-weight:700;font-size:14px;flex-wrap:wrap}.steps span{background:var(--soft);border-radius:99px;padding:6px 12px}
+footer{border-top:1px solid var(--line);padding:18px 0 30px;color:var(--mute);font-size:14px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){.split i,.mb i{transition:none}}
+
+.yb{height:8px;background:rgba(255,255,255,.25);border-radius:5px;overflow:hidden;margin:0 0 16px}
+.yb i{display:block;height:100%;width:0;background:var(--sun);transition:width .35s linear}
+.hero>.coin{position:absolute;z-index:0;bottom:-40px;border-radius:50%;background:var(--sun);color:#3a2a00;display:grid;place-items:center;font-weight:800;opacity:0}
+.btn,.chip,.opt,.seg button,nav button{transition:transform .15s,background .2s,color .2s,border-color .2s}
+.big{transition:color .3s}
+@media (prefers-reduced-motion:no-preference){
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{opacity:0;transform:scale(.6)}100%{opacity:1;transform:none}}
+@keyframes pulse{50%{transform:scale(1.14)}}
+@keyframes floatup{0%{transform:translateY(0) rotate(0);opacity:0}15%{opacity:.85}100%{transform:translateY(-360px) rotate(360deg);opacity:0}}
+main>section:not([hidden])>*{animation:rise .5s both}
+main>section>*:nth-child(2){animation-delay:.07s}
+main>section>*:nth-child(3){animation-delay:.14s}
+main>section>*:nth-child(4){animation-delay:.21s}
+main>section>*:nth-child(n+5){animation-delay:.28s}
+.g>*{animation:rise .5s both}
+.g>*:nth-child(2){animation-delay:.1s}.g>*:nth-child(3){animation-delay:.2s}.g>*:nth-child(4){animation-delay:.3s}.g>*:nth-child(n+5){animation-delay:.35s}
+.hero::after{animation:pulse 4s ease-in-out infinite}
+.hero>.coin{animation:floatup 6s linear infinite}
+#t-al .card:not([hidden]){animation:rise .35s both}
+#al3:not([hidden]) .big{transform-origin:left;animation:pop .55s cubic-bezier(.2,1.4,.4,1) both}
+.btn:hover{transform:translateY(-2px)}
+.tile[data-go]{transition:transform .2s,box-shadow .2s}
+.tile[data-go]:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(15,42,40,.2)}
+.btn:active,.chip:active,.opt:active,.seg button:active{transform:scale(.96)}
+.opt:hover{transform:translateX(4px)}
+}
+
+#askBtn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;background:var(--sun);color:#3a2a00;border:0;border-radius:99px;padding:12px 18px;font:inherit;font-weight:800;box-shadow:0 8px 24px rgba(10,40,28,.3);cursor:pointer}
+#chat{position:fixed;left:12px;right:12px;margin-left:auto;max-width:420px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 40px rgba(10,40,28,.35);display:flex;flex-direction:column;height:min(70vh,520px);overflow:hidden}
+.ch{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--pri);color:#fff;font-weight:800}
+.ch button{font:inherit;background:transparent;border:0;color:#fff;font-size:20px;cursor:pointer}
+#cm{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.m{max-width:85%;padding:9px 12px;border-radius:14px;white-space:pre-wrap;font-size:15px}
+.m.u{align-self:flex-end;background:var(--pri);color:#fff}
+.m.a{align-self:flex-start;background:var(--soft)}
+.cr{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line)}
+.cr input{flex:1;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.cr button{font:inherit;font-weight:700;border:0;border-radius:10px;background:var(--pri);color:#fff;padding:0 16px;cursor:pointer}
+.cr button:disabled{opacity:.5}
+.cn{font-size:12px;color:var(--mute);padding:0 12px 8px}
+
+h1,h2,.logo,.big,.hn,.val,.eng,.dl,.mtop{font-family:'Bricolage Grotesque','DM Sans',system-ui,sans-serif}
+main h1{background:linear-gradient(90deg,var(--pri),var(--cy));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero h1,.ab h1{background:none;-webkit-text-fill-color:currentColor}
+.w{max-width:820px}
+.card{box-shadow:0 6px 22px rgba(10,80,50,.08)}
+.hero{background:linear-gradient(135deg,#25706a,#3b8a80 55%,#3b8a80);background-size:200% 200%}
+.btn{background:linear-gradient(135deg,#25706a,#3b8a80);border-color:transparent}
+.btn.o{background:transparent;border-color:var(--pri);color:var(--pri)}
+.hero .btn{background:var(--sun);color:#3a2a00}
+#side{position:fixed;top:0;left:0;bottom:0;width:250px;background:#14302d;z-index:40;padding:calc(18px + env(safe-area-inset-top,0px)) 14px calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .3s}
+#side.open{transform:none}
+#side .logo{color:#fff;font-size:24px;padding:4px 10px 18px;background:none}
+#side nav{display:flex;flex-direction:column;gap:4px;padding:0;overflow:visible}
+#side nav button{width:100%;text-align:left;padding:13px 14px;border-radius:12px;border:0;background:transparent;color:#dcebe8;font-size:16px;font-weight:600}
+#side nav button:hover{background:rgba(255,255,255,.1)}
+#side nav button[aria-current=page]{background:linear-gradient(90deg,#25706a,#3b8a80);color:#fff}
+.sf{margin-top:auto;color:#cfe3df;text-decoration:none;font-weight:600;padding:10px}
+.scrim{position:fixed;inset:0;background:rgba(6,18,17,.6);z-index:35}
+.top{display:flex;align-items:center;gap:12px;padding:8px 16px}
+.burger{font-size:26px;background:transparent;border:0;color:var(--ink);cursor:pointer;line-height:1}
+@media (min-width:900px){#side{transform:none}.top,.scrim{display:none!important}body{padding-left:250px}}
+.mach{background:linear-gradient(160deg,#1b3f3b,#12302d);color:#fff;border-radius:22px;padding:16px;margin-bottom:14px;border:2px solid #3c7a72;box-shadow:0 12px 32px rgba(6,40,28,.35),inset 0 1px 0 rgba(255,255,255,.15)}
+.mtop{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:800;letter-spacing:.14em;color:#cfe3df;margin-bottom:12px}
+.leds i{display:inline-block;width:11px;height:11px;border-radius:50%;background:#2f4a3c;margin-left:7px}
+.leds i.on{box-shadow:0 0 12px currentColor}
+#l1.on{background:#7fc8b6;color:#7fc8b6}#l2.on{background:#d4a24c;color:#d4a24c}#l3.on{background:#8fd0c2;color:#8fd0c2}
+.lcd{background:#06130f;border:2px solid #0f3a2e;border-radius:12px;padding:12px;font-family:'Share Tech Mono',ui-monospace,monospace;color:#3dffb0;text-shadow:0 0 8px #19d3a2;position:relative;overflow:hidden}
+.lcd::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.2) 0 2px,transparent 2px 4px);pointer-events:none}
+.lr{display:flex;justify-content:space-between;align-items:baseline}.lr small{opacity:.7;letter-spacing:.1em}.lr b{font-size:34px;font-weight:400}
+.mp{height:6px;background:#0f3a2e;border-radius:3px;margin-top:8px;overflow:hidden}.mp i{display:block;height:100%;width:0;background:#3dffb0;box-shadow:0 0 10px #3dffb0}
+.ctrls{display:grid;gap:18px;margin:16px 0;align-items:center}
+@media (min-width:560px){.ctrls{grid-template-columns:150px 1fr}}
+.dialw{display:grid;place-items:center}
+.dial{--a:-81deg;width:132px;height:132px;border-radius:50%;position:relative;background:repeating-conic-gradient(from 0deg,#b5d3cd 0 1deg,transparent 1deg 9deg);border:4px solid #3c7a72;box-shadow:0 0 0 6px #14302d,0 8px 20px rgba(0,0,0,.45)}
+.dial::before{content:"";position:absolute;inset:16px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#3b8a80,#0b2e22);box-shadow:inset 0 2px 6px rgba(255,255,255,.25)}
+.dial i{position:absolute;left:50%;top:50%;width:6px;height:50px;margin-left:-3px;transform-origin:50% 0;border-radius:3px;background:linear-gradient(#ffcb47,#ff8a2b);transform:rotate(calc(var(--a) + 180deg))}
+.dl{text-align:center;margin-top:10px;font-size:11px;font-weight:800;letter-spacing:.12em;color:#cfe3df}.dl b{display:block;font-size:24px;color:#fff;letter-spacing:0}
+.mach label{color:#e8f6ee}.mach .val{color:var(--sun)}
+.mach input[type=number]{background:#06201a;color:#fff;border-color:#3c7a72}
+.mach .chip{background:#144a38;color:#fff;border-color:#3c7a72}
+.mach .chip[aria-pressed=true]{background:var(--sun);color:#3a2a00;border-color:var(--sun)}
+.eng{width:100%;font-weight:800;font-size:18px;letter-spacing:.16em;padding:16px;border-radius:14px;border:0;color:#2a1000;background:linear-gradient(180deg,#ffd45e,#ff8a2b);box-shadow:0 5px 0 #b35a00,0 12px 22px rgba(0,0,0,.4);cursor:pointer}
+.eng:active{transform:translateY(4px);box-shadow:0 1px 0 #b35a00}
+.vg{display:grid;gap:18px}
+@media (min-width:700px){.vg{grid-template-columns:1fr 1fr}.vg>:first-child{grid-column:1/-1}}
+.vt{aspect-ratio:16/9;border-radius:16px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:18px;color:#fff;transition:transform .25s;box-shadow:0 10px 26px rgba(6,50,34,.25)}
+.vc:hover .vt{transform:scale(1.015)}
+.vh{font:800 clamp(20px,5vw,28px)/1.1 'Bricolage Grotesque',sans-serif;max-width:72%;position:relative;text-shadow:0 2px 10px rgba(0,0,0,.25)}
+.vg>:first-child .vh{font-size:clamp(26px,6vw,40px)}
+.wm{position:absolute;right:-6px;top:-34px;font:800 190px/1 'Bricolage Grotesque',sans-serif;opacity:.14}
+.soon{position:absolute;left:14px;top:14px;background:rgba(0,0,0,.45);padding:4px 11px;border-radius:99px;font:700 11px 'Bricolage Grotesque',sans-serif;letter-spacing:.1em}
+.pl{position:absolute;right:16px;bottom:16px;width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.93)}
+.pl::after{content:"";position:absolute;left:22px;top:16px;border-left:19px solid #3a2a00;border-top:12px solid transparent;border-bottom:12px solid transparent}
+.vm{padding:12px 2px}.vm b{display:block;font-size:17px}.vm span{display:block;color:var(--mute);font-size:14px;margin:2px 0 10px}
+.ab{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.av{flex:none;width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font:800 40px 'Bricolage Grotesque',sans-serif;color:#fff;background:linear-gradient(135deg,#25706a,#3b8a80);box-shadow:0 0 0 5px var(--soft)}
+@media (prefers-reduced-motion:no-preference){
+@keyframes gshift{50%{background-position:100% 50%}}
+@keyframes vib{0%{transform:translate(1.5px,0)}50%{transform:translate(-1.5px,1px)}100%{transform:translate(0,-1px)}}
+@keyframes warp{50%{box-shadow:0 0 60px #3b8a80,0 0 30px #25706a}}
+.hero{animation:gshift 9s ease-in-out infinite}
+.mach.shake{animation:vib .08s infinite,warp 1s infinite}
+.av{animation:pulse 5s ease-in-out infinite}
+}
+.sf a{display:block;color:#cfe3df;text-decoration:none;font-weight:600;padding:8px 10px}.sf a:hover{color:#fff}
+
+:root{--bg:#f4f7f4;--card:#fff;--ink:#0d2a1f;--mute:#5a6e63;--line:#dce6df;--soft:#e8f2ec;--pri:#25706a;--cy:#25706a;--sun:#f2a900;--mint:#17895c;--pink:#c93c3c;--org:#d98200;--navy:#1c4a45}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#08150f;--card:#0f2119;--ink:#ecf5ef;--mute:#9db5a6;--line:#1f3a2d;--soft:#153024;--pri:#3ecf93;--cy:#3ecf93;--sun:#f6b73c;--mint:#38c38b;--pink:#ff7b7b;--org:#f0a53a;--navy:#b5d3cd}}
+:root[data-theme="dark"]{--bg:#08150f;--card:#0f2119;--ink:#ecf5ef;--mute:#9db5a6;--line:#1f3a2d;--soft:#153024;--pri:#3ecf93;--cy:#3ecf93;--sun:#f6b73c;--mint:#38c38b;--pink:#ff7b7b;--org:#f0a53a;--navy:#b5d3cd}
+body{font-family:'DM Sans',system-ui,-apple-system,Segoe UI,sans-serif}
+h1,h2,.logo,.big,.hn,.vh,.av,.kpi b{font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-weight:700}
+.eng,.dl,.mtop,.val,.soon{font-family:'DM Sans',system-ui,sans-serif}
+main h1{background:none;-webkit-text-fill-color:currentColor;color:var(--ink)}
+.hero{background:#14302d;border:1px solid #3c7a72;border-radius:12px;animation:none!important}
+.hero::after{display:none}
+.card,.tile,.kpi,.mach,.vt{border-radius:10px;box-shadow:none}
+.tile{border-top:1px solid var(--line);border-left:4px solid var(--pri)}
+.btn{background:var(--pri);border-color:var(--pri);border-radius:8px;color:#fff}
+.btn.o{background:transparent;color:var(--pri)}
+.hero .btn{background:var(--sun);color:#14302d;border-color:var(--sun)}
+#side{background:#14302d}
+#side nav button{border-radius:8px;font-weight:700}
+#side nav button[aria-current=page]{background:rgba(255,255,255,.1);box-shadow:inset 3px 0 0 var(--sun);color:#fff}
+.av{background:#14302d;animation:none!important;box-shadow:0 0 0 4px var(--soft)}
+.mach{background:#1b3f3b;border-color:#3c7a72}
+.eng{background:#25706a;color:#fff;box-shadow:0 4px 0 #2d605a;letter-spacing:.12em;border-radius:8px}
+.eng:active{box-shadow:0 1px 0 #2d605a}
+.lcd{color:#5eead4;text-shadow:0 0 6px rgba(94,234,212,.5);background:#061a1c;border-color:#0f3d40}
+.mp i{background:#5eead4;box-shadow:0 0 8px #5eead4}
+.dial i{background:linear-gradient(#f2a900,#d98200)}
+.seg button,.chip,.opt{border-radius:8px}
+.tag{background:var(--sun);color:#14302d}
+.split .b{background:var(--sun)}
+.mb.t i{background:var(--sun)}
+#askBtn{background:#14302d;color:#fff}
+.ch{background:#14302d}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+@media (min-width:700px){.kpis{grid-template-columns:repeat(4,1fr)}}
+.kpi{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--pri);padding:14px 10px;text-align:center}
+.kpi b{display:block;font-size:30px;color:var(--pri);line-height:1.2}.kpi span{font-size:13px;color:var(--mute)}
+.kf{margin:0;padding-left:20px}.kf li{margin-bottom:8px}
+.hb{display:grid;grid-template-columns:minmax(92px,36%) 1fr 50px;gap:8px;align-items:center;margin:8px 0;font-size:14px}
+.hb .tr{height:16px;background:var(--soft);border-radius:3px;overflow:hidden}
+.hb .tr i{display:block;height:100%;width:0;background:var(--pri);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.hb.top .tr i{background:var(--sun)}.hb .tr i.n{background:var(--navy)}
+.hb b{text-align:right}
+.ag{padding:8px 0;border-top:1px solid var(--line)}.ag:first-child{border-top:0}.al{font-weight:700}
+.ag .hb{margin:4px 0}
+.lg{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--mute);margin-bottom:6px}.lg i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.k1{background:var(--pri)}.k2{background:var(--navy)}
+.ins{border-left:4px solid var(--pri);background:var(--soft);padding:10px 12px;border-radius:0 8px 8px 0;font-size:14px;margin-top:12px}
+.tbl{overflow-x:auto}
+@media (prefers-reduced-motion:reduce){.hb .tr i{transition:none}}
+.hero h1{color:#fff}
+
+#about .ab{background:linear-gradient(135deg,#14302d,#1f4743);border:2px solid #f2b705;border-radius:14px;padding:18px;color:#fff}
+#about .ab h1{background:none;-webkit-text-fill-color:#ffd84d;color:#ffd84d}
+#about .ab .sub{color:#f3e2a0}
+#about .av{background:linear-gradient(135deg,#ffe27a,#f2b705 60%,#c98f00);color:#3a2a00;box-shadow:0 0 0 4px rgba(242,183,5,.35)}
+#about .card,#about .tile{background:#fffbea;border-color:#f2d36b}
+#about .tile{border-left:4px solid #f2b705}
+#about h2{color:#8a6100}
+#about .steps span{background:#ffeea8;color:#3a2a00}
+#about .btn{background:#f2b705;border-color:#f2b705;color:#3a2a00}
+#about .btn.o{background:transparent;color:#8a6100}
+@media (prefers-color-scheme:dark){#about .card,#about .tile{background:#221c08;border-color:#6b5a14}#about h2{color:#ffd84d}#about .steps span{background:#3a2f0a;color:#ffe9a0}#about .btn.o{color:#ffd84d}}
+.hero>.coin{top:-40px;bottom:auto;background:radial-gradient(circle at 35% 30%,#ffe27a,#f2b705 60%,#b98300);color:#5a3d00;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+fieldset.card{min-width:0;margin:0 0 14px}
+fieldset legend{font-weight:700;padding:0 4px;font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-size:17px}
+.qn{display:inline-block;background:var(--navy);color:#fff;border-radius:99px;padding:1px 9px;font:700 13px 'DM Sans',sans-serif;margin-right:4px}
+.op{display:flex;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:8px;margin:6px 0;cursor:pointer;transition:border-color .15s,background .15s}
+.op:hover{border-color:var(--pri)}.op:has(input:checked){border-color:var(--pri);background:var(--soft);font-weight:700}
+.op input{accent-color:var(--pri);width:18px;height:18px;flex:none}
+textarea{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);resize:vertical}
+@media (prefers-reduced-motion:no-preference){
+@keyframes drop{0%{transform:translateY(0) rotateY(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(430px) rotateY(900deg);opacity:0}}
+@keyframes shine{0%,100%{box-shadow:0 0 0 4px rgba(242,183,5,.3)}50%{box-shadow:0 0 0 10px rgba(242,183,5,.08),0 0 26px rgba(242,183,5,.7)}}
+.hero>.coin{animation:drop var(--d,6s) linear var(--l,0s) infinite}
+#about .av{animation:shine 3s ease-in-out infinite!important}
+}
+/* ===== v3: indigo + saffron theme, new interface ===== */
+:root{--bg:#e9eeec;--card:#fff;--ink:#14211f;--mute:#4a5d59;--line:#cdd9d5;--soft:#dde6e3;--pri:#25706a;--cy:#25706a;--sun:#d4a24c;--mint:#3f8a62;--pink:#b5524a;--org:#b8782a;--navy:#1c4a45}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c1716;--card:#13201f;--ink:#e8f0ee;--mute:#9db3ae;--line:#24403c;--soft:#1a2c2a;--pri:#5fb3a6;--cy:#5fb3a6;--sun:#e0b45f;--mint:#6fbf8e;--pink:#e08a80;--org:#e0a05a;--navy:#9fd0c7}}
+:root[data-theme="dark"]{--bg:#0c1716;--card:#13201f;--ink:#e8f0ee;--mute:#9db3ae;--line:#24403c;--soft:#1a2c2a;--pri:#5fb3a6;--cy:#5fb3a6;--sun:#e0b45f;--mint:#6fbf8e;--pink:#e08a80;--org:#e0a05a;--navy:#9fd0c7}
+body{font-family:'DM Sans',system-ui,sans-serif;background-image:radial-gradient(900px 420px at 100% -10%,rgba(59,138,128,.12),transparent 60%),radial-gradient(700px 360px at -10% 35%,rgba(212,162,76,.08),transparent 60%);background-attachment:fixed}
+main h1{font-size:clamp(28px,6vw,38px);letter-spacing:-.02em;color:var(--ink)}
+.hero{background:linear-gradient(140deg,#1c4a45,#25706a 58%,#4f9e93);border:0;border-radius:28px;padding:30px 22px;box-shadow:0 22px 44px rgba(15,42,40,.22)}
+.hero::after{display:block;background:radial-gradient(circle at 35% 30%,#f1dcae,#d4a24c 65%,#c28f3d);opacity:.95}
+.hero .btn{background:var(--sun);color:#2a1d08;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.yb i{background:linear-gradient(90deg,#b8f0d8,#d4a24c)}
+.card,.tile,.kpi,.vt{border-radius:22px}
+.card,.tile,.kpi{border:1px solid var(--line);box-shadow:0 10px 28px rgba(15,42,40,.08)}
+.btn{background:linear-gradient(135deg,#25706a,#3b8a80);border:0;border-radius:14px;color:#fff;box-shadow:0 6px 16px rgba(15,42,40,.22)}
+.btn.o{background:transparent;border:2px solid var(--pri);color:var(--pri);box-shadow:none}
+input[type=number],input[type=text],textarea{border-radius:14px;background:var(--card);border:1.5px solid var(--line)}
+input:focus{border-color:var(--pri);outline:0;box-shadow:0 0 0 3px rgba(59,138,128,.25)}
+.chip,.seg button{border-radius:99px}.opt,.op{border-radius:14px}
+.chip[aria-pressed=true]{background:#25706a;color:#fff;border-color:#25706a}
+.seg{overflow-x:auto;padding-bottom:6px;scrollbar-width:none}.seg::-webkit-scrollbar{display:none}
+.seg button{flex:none;padding:10px 16px;white-space:nowrap}
+.seg button[aria-pressed=true]{background:linear-gradient(135deg,#25706a,#3b8a80);border-color:transparent;color:#fff}
+#side{background:linear-gradient(180deg,#14302d,#0f2624)}
+#side nav button{border-radius:14px}
+#side nav button[aria-current=page]{background:rgba(255,255,255,.12);box-shadow:inset 3px 0 0 var(--sun)}
+.tile{border-left:1px solid var(--line);padding:14px}
+.tg{grid-template-columns:1fr 1fr}@media(min-width:760px){.tg{grid-template-columns:repeat(4,1fr)}}
+.ti{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;margin-bottom:10px;font:800 19px 'Bricolage Grotesque',sans-serif;font-style:normal;color:var(--ink);background:color-mix(in srgb,var(--c) 22%,var(--card))}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:15px}.kv b{font-variant-numeric:tabular-nums}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.ringw{position:relative;width:min(250px,72vw);margin:8px auto 14px}.ringw svg{display:block;width:100%}
+.ringw circle{transition:stroke-dasharray .5s,stroke-dashoffset .5s}
+.rc{position:absolute;inset:0;display:grid;place-content:center;text-align:center}.rc small{color:var(--mute);font-size:12px}
+.rc b{font:800 clamp(22px,6vw,30px) 'Bricolage Grotesque',sans-serif}
+@media (prefers-reduced-motion:reduce){.ringw circle{transition:none}}
+/* inflation machine */
+.mach{position:relative;background:linear-gradient(165deg,#1f4743,#173633 70%);border:0;border-radius:30px;padding:22px 18px;box-shadow:0 26px 50px rgba(8,24,22,.38),inset 0 2px 0 rgba(255,255,255,.2),inset 0 -8px 20px rgba(0,0,0,.3)}
+.mach::before,.mach::after{content:"";position:absolute;top:12px;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#92bab3 55%,#2f6660)}
+.mach::before{left:16px}.mach::after{right:16px}
+.mtop{margin:0 6px 14px;color:#cfe3df}
+.leds i{background:#2f6660}
+.lcd{background:#0d1b1a;border:3px solid #2f6660;border-radius:18px;color:#b8f0d8;text-shadow:0 0 10px rgba(160,235,205,.45);box-shadow:inset 0 0 26px rgba(0,0,0,.65),0 0 0 4px #14302d}
+.mp{background:#173633}.mp i{background:linear-gradient(90deg,#b8f0d8,#d4a24c);box-shadow:0 0 12px #b8f0d8}
+@media (min-width:560px){.ctrls{grid-template-columns:190px 1fr}}
+.dial{--p:10;width:156px;height:156px;border:0;background:conic-gradient(from -135deg,#d4a24c 0,#c28f3d calc(var(--p)*2.7deg),rgba(255,255,255,.14) calc(var(--p)*2.7deg) 270deg,transparent 270deg);box-shadow:0 0 0 7px #14302d,0 12px 26px rgba(0,0,0,.5),0 0 34px rgba(212,162,76,.22)}
+.dial::before{inset:15px;background:radial-gradient(circle at 35% 30%,#3c7a72,#14302d);box-shadow:inset 0 3px 8px rgba(255,255,255,.2),0 0 0 3px #0f201f}
+.dial i{height:46px;background:linear-gradient(#e6c07a,#c28f3d)}
+.dial::after{content:"";position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f1dcae,#d4a24c)}
+.mach label{color:#e9e6ff}
+.mach input[type=number]{background:#112221;border-color:#3c7a72;color:#fff}
+.mach .chip{background:#1f4743;border-color:#3c7a72;color:#fff}
+.mach input[type=range]{accent-color:var(--sun)}
+.eng{background:linear-gradient(180deg,#e6c07a,#c28f3d);color:#2a1d08;border-radius:18px;box-shadow:0 6px 0 #8a6224,0 14px 26px rgba(0,0,0,.4),0 0 26px rgba(212,162,76,.22)}
+.eng:active{box-shadow:0 1px 0 #8a6224}
+#about .card,#about .tile{background:var(--card);border-color:var(--line)}
+#about h2{color:var(--pri)}#about .steps span{background:var(--soft);color:var(--ink)}
+#about .btn{background:linear-gradient(135deg,#25706a,#3b8a80);color:#fff;border:0}#about .btn.o{background:transparent;border:2px solid var(--pri);color:var(--pri)}
+.hero::after{width:110px;height:110px;right:-34px;top:-34px}
+.hero h1{max-width:80%}
+.hero>.coin{opacity:0;filter:saturate(.8)}
+@media (prefers-reduced-motion:no-preference){@keyframes drop{0%{transform:translateY(0) rotateY(0);opacity:0}10%{opacity:.35}90%{opacity:.35}100%{transform:translateY(430px) rotateY(900deg);opacity:0}}}
+.hero{box-shadow:0 14px 30px rgba(15,42,40,.18)}.btn{box-shadow:0 4px 10px rgba(15,42,40,.16)}.mach{box-shadow:0 18px 36px rgba(8,24,22,.32),inset 0 2px 0 rgba(255,255,255,.12),inset 0 -8px 20px rgba(0,0,0,.25)}
+.hero .hn{color:#f5dfa8}.hero::after{background:radial-gradient(circle at 35% 30%,#f1dcae,#d4a24c 65%,#c28f3d)}
+.hero{background:linear-gradient(140deg,#0f2a28,#1a4440 58%,#25605a)}
+.hero::after{background:radial-gradient(circle at 35% 30%,#f1dcae,#d4a24c 65%,#b8862f)}
+.card,.tile,.kpi{border-color:var(--line)}
+</style>
+</head>
+<body>
+<aside id="side" aria-label="Site"><a class="logo" data-go="home">Finwise Lab</a>
+<nav aria-label="Pages"><button data-go="home">Home</button><button data-go="tools">Tools</button><button data-go="budget">Budget Lab</button><button data-go="learn">Learn</button><button data-go="take">Take the survey</button><button data-go="survey">Survey results</button><button data-go="about">About me</button></nav>
+<div class="sf"><a href="https://instagram.com/hey.rithick" target="_blank" rel="noopener">Instagram: @hey.rithick</a><a href="https://youtube.com/@heyrithick-r" target="_blank" rel="noopener">YouTube: Hey Rithick</a></div></aside>
+<div class="scrim" id="scrim" hidden></div>
+<header class="top"><button class="burger" id="burger" aria-label="Open menu">☰</button><a class="logo" data-go="home" style="padding:0">Finwise Lab</a></header>
+<div class="w"><main>
+
+<section id="home">
+  <div class="hero">
+    <h1>Make clearer decisions with your money.</h1>
+    <p>Today's ₹100, adjusted for 6% inflation, is worth:</p>
+    <div class="hn" id="hn">₹100</div>
+    <p id="hy" style="margin:0 0 8px"></p><div class="yb"><i id="yf"></i></div>
+    <button class="btn" data-go="tools" data-tool="inf">Open the inflation simulator</button>
+  </div>
+  <div class="card"><h2>Free tools. No sign-up. Built for students and first-time earners.</h2>
+    <div class="steps"><span>Buy smart</span><span>Protect it</span><span>Grow it</span><span>Plan it</span></div></div>
+  <div class="g tg" style="margin-bottom:14px"><button class="tile" style="--c:var(--mint)" data-go="tools" data-tool="al"><i class="ti">⚖</i><b>Asset or Liability?</b><span>Check before you buy</span></button><button class="tile" style="--c:var(--org)" data-go="tools" data-tool="inf"><i class="ti">⏳</i><b>Inflation Machine</b><span>See what your money will really buy</span></button><button class="tile" style="--c:var(--pri)" data-go="tools" data-tool="sip"><i class="ti">◔</i><b>SIP Calculator</b><span>Watch small savings grow</span></button><button class="tile" style="--c:var(--pink)" data-go="tools" data-tool="emi"><i class="ti">₹</i><b>EMI Calculator</b><span>Know your monthly loan payment</span></button><button class="tile" style="--c:var(--mint)" data-go="tools" data-tool="gst"><i class="ti">%</i><b>Discount & GST</b><span>What you really pay at the shop</span></button><button class="tile" style="--c:var(--org)" data-go="tools" data-tool="spl"><i class="ti">÷</i><b>Split the Bill</b><span>Fair share for friends and trips</span></button><button class="tile" style="--c:var(--pri)" data-go="tools" data-tool="goal"><i class="ti">◎</i><b>Goal Saver</b><span>How much to save every month</span></button><button class="tile" style="--c:var(--pink)" data-go="budget"><i class="ti">▤</i><b>Budget Lab</b><span>Test your spending against 50/30/20</span></button></div>
+  <div class="card"><h2>What people told us</h2><p class="sub" style="margin:0 0 12px">In our anonymous survey of working adults aged 25 to 45 (n = 8), half named loans and EMIs as their biggest financial challenge.</p><button class="btn o" data-go="survey">See the survey results</button> <button class="btn" data-go="take">Take the survey</button></div>
+  <div class="card"><h2>Watch the journey</h2><p class="sub" style="margin:0 0 12px">Follow Hey Rithick on YouTube for the learning and entrepreneurial journey behind Finwise Lab.</p><a class="btn" href="https://youtube.com/@heyrithick-r" target="_blank" rel="noopener">Watch on YouTube</a></div>
+  <div class="card"><h2>Rule of the day</h2><div class="rule" style="margin:0">Does it put money in your pocket, or take money out?</div></div>
+</section>
+
+<section id="tools" hidden>
+  <h1>Tools</h1><p class="sub">Everyday money tools. Pick one and try it.</p>
+  <div class="seg" role="group" aria-label="Tool"><button data-t="al" aria-pressed="true">Asset / Liability</button><button data-t="inf" aria-pressed="false">Inflation</button><button data-t="sip" aria-pressed="false">SIP</button><button data-t="emi" aria-pressed="false">EMI</button><button data-t="gst" aria-pressed="false">Discount &amp; GST</button><button data-t="spl" aria-pressed="false">Split bill</button><button data-t="goal" aria-pressed="false">Goal saver</button></div>
+
+  <div id="t-al">
+    <div class="card" id="al0"><h2>What are you about to buy?</h2><div class="chips" id="alc"></div>
+      <input type="text" id="alx" placeholder="Something else? Type it (e.g. tractor)" aria-label="Custom item" style="margin-top:10px"><button class="btn" id="alg" style="margin-top:10px">Next</button></div>
+    <div class="card" id="al1" hidden><p class="note" style="margin:0 0 6px">Question 1 of 2</p><h2 id="q1t"></h2><p class="sub" id="tip"></p>
+      <button class="opt" data-e="1">Yes, it will earn me money</button><button class="opt" data-e="0">No, only I will use it</button></div>
+    <div class="card" id="al2" hidden><p class="note" style="margin:0 0 6px">Question 2 of 2</p><h2 id="q2t"></h2>
+      <button class="opt" data-v="up">It will rise</button><button class="opt" data-v="same">It will stay the same</button><button class="opt" data-v="down">It will fall (wear and tear)</button></div>
+    <div class="card" id="al3" hidden aria-live="polite"><p class="big" id="vd"></p><p id="why" style="margin:0"></p><div class="rule" id="rl"></div><button class="btn o" id="alr" style="margin-top:14px">Check another item</button></div>
+  </div>
+
+  <div id="t-inf" hidden>
+    <div class="mach" id="mach">
+      <div class="mtop"><span>INFLATION SIMULATOR</span><span class="leds"><i id="l1"></i><i id="l2"></i><i id="l3"></i></span></div>
+      <div class="lcd"><div class="lr"><small>PROJECTED YEAR</small><b id="mY">2036</b></div><div class="lr"><small>STATUS</small><b id="mS" style="font-size:20px">READY</b></div><div class="mp"><i id="mpb"></i></div></div>
+      <div class="ctrls">
+        <div class="dialw"><div class="dial" id="dial"><i></i></div><div class="dl">YEARS AHEAD<b id="dV">10</b></div></div>
+        <div class="ci">
+          <div class="r"><label for="ia">Your money (₹)</label><input id="ia" type="number" inputmode="numeric" value="100" min="1"></div>
+          <div class="r"><label for="iy">Years ahead<span class="val" id="iyV"></span></label><input id="iy" type="range" min="0" max="100" value="10"><div class="chips" id="iyc"></div></div>
+          <div class="r" style="margin:0"><label for="ii">Inflation (% per year)<span class="val" id="iiV"></span></label><input id="ii" type="range" min="2" max="10" step="0.5" value="6"></div>
+        </div>
+      </div>
+      <button class="eng" id="eng">RUN SIMULATION</button>
+    </div>
+    <div class="card" aria-live="polite"><p class="big warn" id="ib">₹ --</p><p id="i1" style="margin:6px 0">Set the years and inflation rate, then run the simulation.</p><p id="i2" style="margin:6px 0"></p><div class="rule">Over time, the same money buys less.</div></div>
+    <div class="card"><h2>What can your money buy there?</h2><div id="ibk"><p class="note" style="margin:0">Run the simulation to see future prices.</p></div><p class="note">Prices are examples; yours may differ. Teal bar = now, gold bar = then.</p></div>
+  </div>
+
+  <div id="t-sip" hidden>
+    <div class="card">
+      <div class="r"><label for="sp">Monthly SIP (₹)</label><input id="sp" type="number" inputmode="numeric" value="5000" min="100"></div>
+      <div class="r"><label for="sr">Expected return (% per year)<span class="val" id="srV"></span></label><input id="sr" type="range" min="1" max="20" step="0.5" value="12"></div>
+      <div class="r" style="margin:0"><label for="sy">Years<span class="val" id="syV"></span></label><input id="sy" type="range" min="1" max="40" value="10"></div>
+    </div>
+    <div class="card" aria-live="polite"><div id="sipR"></div><div class="leg"><span><i class="dot" style="background:var(--pri)"></i>Invested <b id="si"></b></span><span><i class="dot" style="background:var(--sun)"></i>Returns <b id="sg"></b></span></div>
+      <p class="sub" style="margin:12px 0 0" id="sx"></p><div class="rule">It's not the amount. It's staying consistent.</div>
+      <p class="note">Returns are not guaranteed. 12% is only an example. For education, not financial advice.</p></div>
+  </div>
+
+  <div id="t-emi" hidden>
+    <div class="card"><div class="r"><label for="lp">Loan amount (₹)</label><input id="lp" type="number" inputmode="numeric" value="500000" min="1000"></div>
+      <div class="r"><label for="lr">Interest (% per year)<span class="val" id="lrV"></span></label><input id="lr" type="range" min="1" max="30" step=".25" value="10.5"></div>
+      <div class="r" style="margin:0"><label for="ly">Tenure (years)<span class="val" id="lyV"></span></label><input id="ly" type="range" min="1" max="30" value="5"></div></div>
+    <div class="card" aria-live="polite"><p class="note" style="margin:0">Monthly EMI</p><p class="big" id="lE"></p><div id="emiR"></div>
+      <div class="leg"><span><i class="dot" style="background:var(--pri)"></i>Loan <b id="lP"></b></span><span><i class="dot" style="background:var(--sun)"></i>Interest <b id="lI"></b></span></div>
+      <p class="sub" style="margin:12px 0 0" id="lx"></p><div class="rule">A common thumb rule: keep all your EMIs under 40% of monthly income.</div><p class="note">Estimate only. Banks may add processing fees. For education, not financial advice.</p></div>
+  </div>
+  <div id="t-gst" hidden>
+    <div class="card"><div class="r"><label for="txP">Price on the tag (₹)</label><input id="txP" type="number" inputmode="numeric" value="1999" min="0"></div>
+      <div class="r"><label for="txD">Discount<span class="val" id="txDV"></span></label><input id="txD" type="range" min="0" max="90" value="20"></div>
+      <div class="r"><label>GST rate</label><div class="chips" id="txR"></div></div>
+      <div class="r" style="margin:0"><label>Is GST already in that price?</label><div class="chips" id="txM"></div></div></div>
+    <div class="card" aria-live="polite"><p class="note" style="margin:0">You pay</p><p class="big good" id="txO"></p>
+      <div class="kv"><span>You save</span><b id="txS"></b></div><div class="kv"><span>Price before GST</span><b id="txB"></b></div><div class="kv"><span>GST amount</span><b id="txG"></b></div>
+      <div class="rule">Check the final price, not just the discount percentage.</div></div>
+  </div>
+  <div id="t-spl" hidden>
+    <div class="card"><div class="r"><label for="dvT">Total bill (₹)</label><input id="dvT" type="number" inputmode="numeric" value="2400" min="0"></div>
+      <div class="r"><label for="dvN">People<span class="val" id="dvNV"></span></label><input id="dvN" type="range" min="1" max="20" value="4"></div>
+      <div class="r" style="margin:0"><label>Tip or service charge</label><div class="chips" id="dvC"></div></div></div>
+    <div class="card" aria-live="polite"><p class="note" style="margin:0">Each person pays</p><p class="big good" id="dvO"></p><div class="kv"><span>Bill with tip</span><b id="dvS"></b></div><div class="rule">Settle up on UPI the same day. It keeps friendships easy.</div></div>
+  </div>
+  <div id="t-goal" hidden>
+    <div class="card"><div class="r"><label for="glA">What do you want to buy? Cost (₹)</label><input id="glA" type="number" inputmode="numeric" value="80000" min="1000"></div>
+      <div class="r"><label for="glM">Time to reach it<span class="val" id="glMV"></span></label><input id="glM" type="range" min="3" max="120" value="12"></div>
+      <div class="r" style="margin:0"><label for="glR">Expected return (% per year)<span class="val" id="glRV"></span></label><input id="glR" type="range" min="0" max="15" step=".5" value="0"></div></div>
+    <div class="card" aria-live="polite"><p class="note" style="margin:0">Save every month</p><p class="big good" id="glO"></p><p class="sub" id="glN" style="margin:6px 0 0"></p><div class="rule">Start the day you decide, not the day you feel ready.</div><p class="note">Keep returns at 0% for plain saving. Returns are not guaranteed.</p></div>
+  </div>
+</section>
+
+<section id="budget" hidden>
+  <h1>Budget Lab</h1><p class="sub">Where is your money going? The target split is 50 / 30 / 20.</p>
+  <div class="card" id="bf"></div>
+  <div class="card" aria-live="polite"><table><thead><tr><th>Group</th><th>You</th><th>Target</th></tr></thead><tbody id="tb"></tbody></table>
+    <p class="big" style="font-size:24px;margin-top:14px" id="bv"></p><p class="sub" style="margin:0" id="bl"></p>
+    <p class="sub" style="margin:10px 0 0" id="be"></p>
+    <div class="rule">Pay yourself first, spend what's left.</div>
+    <p class="note">Needs = rent + food + travel/bills + EMI. Wants = fun. Savings = savings and investing.</p></div>
+</section>
+
+<section id="learn" hidden>
+  <h1>Learn</h1><p class="sub">Money topics in plain language.</p>
+  <div class="card"><h2>Topics</h2><div class="g" id="topics"></div></div>
+  <h2 style="margin:22px 0 12px;font-size:22px">Upcoming courses</h2><div class="vg" id="courses"></div>
+</section>
+
+<section id="take" hidden>
+  <h1>Take the survey</h1><p class="sub">Financial Challenges &amp; Decision-Making Survey. Anonymous survey on everyday financial decisions. No name, phone number, salary, bank details or other sensitive information required.</p>
+  <div id="sv-form"></div><div class="card" id="sv-done" hidden></div>
+</section>
+
+<section id="survey" hidden>
+  <h1>Survey Results</h1><p class="sub">Financial Challenges &amp; Decision-Making Survey. Anonymous survey of working adults aged 25 to 45 (n = 8).</p>
+  <div class="kpis"><div class="kpi"><b>62.5%</b><span>of respondents are aged 25-35</span></div><div class="kpi"><b>37.5%</b><span>find expense management difficult</span></div><div class="kpi"><b>50%</b><span>name Loans / EMIs as a top challenge</span></div><div class="kpi"><b>37.5%</b><span>say too many options hurt planning</span></div></div>
+  <div class="card"><h2>Key findings</h2><ul class="kf">
+    <li><b>Debt servicing dominates.</b> Loans / EMIs appear in the top challenges, hard-to-manage areas and wish-list answers across both age groups.</li>
+    <li><b>The saving gap.</b> Saving is both a top challenge and a top confusion area, closely linked to unexpected expenses.</li>
+    <li><b>Clarity beats information.</b> Respondents are overwhelmed by choice and want trustworthy, simple direction.</li>
+    <li><b>Long-term planning is out of focus.</b> Retirement planning and taxes received 0%; immediate cash-flow pressure takes priority.</li>
+    <li><b>Income allocation is a hidden pain.</b> Splitting a monthly salary across many needs surfaced as an explicit problem.</li></ul></div>
+  <div class="card"><h2>How hard is managing monthly expenses?</h2><div id="c-q2"></div><div class="ins">No respondent finds expense management easy. 37.5% find it somewhat or very difficult, and most sit in the uncomfortable middle.</div></div>
+  <div class="card"><h2>Biggest financial challenge</h2><div id="c-ch"></div><div class="ins">Half of respondents name Loans / EMIs. Retirement planning and taxes were not selected by anyone, so present-day cash flow outweighs long-term planning.</div></div>
+  <div class="card"><h2>Hardest areas to manage or understand</h2><div id="c-hard"></div><div class="ins">Saving and Investing are tied as the most confusing areas. The problem is the lack of a clear, simple method, not only a shortage of money.</div></div>
+  <div class="card"><h2>How respondents track expenses</h2><div id="c-trk"></div><div class="ins">Nobody uses a spreadsheet and 12.5% do not track at all. Tracking alone has not translated into a working budget.</div></div>
+  <div class="card"><h2>What makes planning difficult</h2><div id="c-bar"></div><div class="ins">Too many financial options is the leading barrier. Decision fatigue, not lack of knowledge, is the core issue.</div></div>
+  <div class="card"><h2>Biggest challenge by age group</h2><div class="lg"><span><i class="k1"></i>25-35 years (n = 5)</span><span><i class="k2"></i>36-45 years (n = 3)</span></div><div id="c-age"></div>
+    <div class="ins">Ages 25-35 are digital in their habits but unsure how to grow and protect money. Ages 36-45 carry heavier obligations such as children's education and medical costs. Loans / EMIs cut across both groups. Groups are small, so read these as indicative.</div></div>
+  <div class="card"><h2>In their words</h2><p class="note" style="margin:0 0 8px">One financial problem respondents wish was easier (75% responded)</p><div class="tbl"><table><thead><tr><th>Theme</th><th>Share</th></tr></thead><tbody>
+    <tr><td>Loans / Home loan</td><td>25%</td></tr><tr><td>Investments &amp; Insurance</td><td>25%</td></tr><tr><td>Children's education</td><td>12.5%</td></tr><tr><td>Dividing monthly income</td><td>12.5%</td></tr><tr><td>No response</td><td>25%</td></tr></tbody></table></div></div>
+  <div class="card"><h2>What we are building next</h2><div class="tbl"><table><thead><tr><th>#</th><th>Focus area</th><th>Planned action</th></tr></thead><tbody>
+    <tr><td>1</td><td>Loans / EMIs</td><td>Simple guides on EMI planning, loan prioritisation and affordability limits</td></tr>
+    <tr><td>2</td><td>Saving &amp; emergency fund</td><td>Salary split rules and a starter emergency fund</td></tr>
+    <tr><td>3</td><td>Investing &amp; insurance basics</td><td>Beginner roadmap for ages 25-35</td></tr>
+    <tr><td>4</td><td>Decision simplification</td><td>Short checklists and comparisons that reduce choice overload</td></tr>
+    <tr><td>5</td><td>Family-stage planning</td><td>Education funding and medical contingencies for ages 36-45</td></tr></tbody></table></div></div>
+  <div class="card"><h2>Methodology and limitations</h2><p style="margin:0">Anonymous survey with closed-ended and open-ended questions. Sample size is n = 8 (25-35 years: 5; 36-45 years: 3), so findings are indicative rather than statistically conclusive and highlight early patterns to guide larger data collection. Where respondents chose multiple options, all selections were counted, so totals may exceed 100%.</p></div>
+</section>
+
+<section id="about" hidden>
+  <div class="ab"><div class="av">R</div><div><h1 style="margin:0">Hi, I'm Rithick</h1><p class="sub" style="margin:4px 0 0">Creator and builder, known as Hey Rithick</p></div></div>
+  <div class="card"><h2>My story</h2>
+    <p style="margin:0 0 10px">I document my life as it happens: what I'm learning, how I'm growing and the journey of building something of my own. I share it on Instagram as <b>@hey.rithick</b> and on YouTube as <b>Hey Rithick</b>.</p>
+    <p style="margin:0">Finwise Lab started with a simple question: why is money something so many of us were never taught? I surveyed people about their financial challenges, found the weak spots, and I'm turning those answers into free tools and lessons here.</p></div>
+  <div class="g" style="margin-bottom:14px">
+    <div class="tile" style="--c:var(--pri);cursor:default"><b>Learning</b><span>Picking up new skills in public.</span></div>
+    <div class="tile" style="--c:var(--pink);cursor:default"><b>Personal growth</b><span>Becoming a little better every day.</span></div>
+    <div class="tile" style="--c:var(--org);cursor:default"><b>Entrepreneurial journey</b><span>Building something of my own, openly.</span></div>
+    <div class="tile" style="--c:var(--mint);cursor:default"><b>Finwise Lab</b><span>Money, made simple and free.</span></div></div>
+  <div class="card"><h2>What I stand for</h2><div class="steps"><span>Vision</span><span>Becoming</span><span>Building a Skillset</span><span>Connecting the Dots</span></div>
+    <a class="btn" style="margin-top:14px" href="https://instagram.com/hey.rithick" target="_blank" rel="noopener">Follow @hey.rithick</a> <a class="btn o" style="margin-top:14px" href="https://youtube.com/@heyrithick-r" target="_blank" rel="noopener">Watch on YouTube</a></div>
+</section>
+
+</main>
+<footer>Finwise Lab by Hey Rithick. For education, not financial advice.<br><a href="https://instagram.com/hey.rithick" target="_blank" rel="noopener" style="color:var(--pri)">Instagram</a> &nbsp;|&nbsp; <a href="https://youtube.com/@heyrithick-r" target="_blank" rel="noopener" style="color:var(--pri)">YouTube</a></footer></div>
+
+<button id="askBtn" hidden>Ask Finwise AI</button>
+<div id="chat" hidden role="dialog" aria-label="Finwise AI chat"><div class="ch"><span>Finwise AI</span><button id="cc" aria-label="Close chat">×</button></div>
+<div id="cm" aria-live="polite"><div class="m a">Hi! Ask me anything about money: budgeting, SIP, inflation, assets and more.</div>
+<div class="chips"><button class="chip cc">What is a SIP?</button><button class="chip cc">Asset vs liability?</button><button class="chip cc">How big should my emergency fund be?</button><button class="chip cc">Why does inflation matter?</button></div></div>
+<div class="cr"><input id="cx" type="text" placeholder="Type your question" aria-label="Your question" maxlength="400"><button id="cs">Send</button></div>
+<div class="cn">AI answers are for learning, not financial advice.</div></div>
+<script>
+const $=id=>document.getElementById(id),fmt=n=>n>=1e7?'₹'+(n/1e7).toFixed(2).replace(/\.00$/,'')+' Cr':n>=1e5?'₹'+(n/1e5).toFixed(2).replace(/\.00$/,'')+' L':n>=100?'₹'+Math.round(n).toLocaleString('en-IN'):'₹'+n.toFixed(2).replace(/\.?0+$/,'');
+const P=['home','tools','budget','learn','take','survey','about'];
+function go(p){P.forEach(x=>$(x).hidden=x!==p);document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-current',b.dataset.go===p?'page':'false'));history.replaceState(null,'','#p-'+p);scrollTo(0,0);if(p==='survey')bars()}
+function tool(t){['al','inf','sip','emi','gst','spl','goal'].forEach(x=>$('t-'+x).hidden=x!==t);document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===t))}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){go(g.dataset.go);if(g.dataset.tool)tool(g.dataset.tool)}const s=e.target.closest('.seg button');if(s)tool(s.dataset.t)});
+
+const still=matchMedia('(prefers-reduced-motion:reduce)').matches;let yr=still?20:0;
+function hero(){const w=100/Math.pow(1.06,yr);$('hn').textContent='₹'+w.toFixed(w<10?1:0);$('hy').textContent=yr===0?'Today':'After '+yr+' years (at 6% inflation)';$('yf').style.width=yr/40*100+'%'}
+hero();if(!still)setInterval(()=>{yr=(yr+1)%41;hero()},350);
+if(!still){const hr=document.querySelector('.hero');for(let i=0;i<9;i++){const c=document.createElement('b');c.className='coin';c.textContent='₹';const z=24+i%3*6;c.style.cssText=`left:${4+i*11}%;width:${z}px;height:${z}px;font-size:${z*.55}px;--d:${5+i%4}s;--l:-${i*.8}s`;hr.prepend(c)}}
+function tween(el,to){const from=+el._v||0;el._v=to;if(still){el.textContent=fmt(to);return}cancelAnimationFrame(el._r);const t0=performance.now();(function s(t){const k=Math.min(1,(t-t0)/450),e=1-Math.pow(1-k,3);el.textContent=fmt(from+(to-from)*e);if(k<1)el._r=requestAnimationFrame(s)})(t0)}
+
+
+const tips={'Bike':'For commuting only, it is an expense. For delivery or rental work, it earns money.','Car':'Used as a cab, it earns. For personal use it costs EMI, fuel and insurance.','Flat / House':'Rented out, it earns. Lived in, it costs EMI and maintenance.','Land':'No rent, but value often rises. It depends on the area.','Gold':'It earns nothing monthly, but its value usually rises over time.','Laptop':'Used for freelance or work, it earns. Used for fun, it is a cost.','Phone':'Usually an expense. It can earn if used for business or content.'};
+let it='',ea=null;const sh=a=>['al0','al1','al2','al3'].forEach((x,i)=>$(x).hidden=i!==a);
+Object.keys(tips).forEach(k=>{const b=document.createElement('button');b.className='chip';b.textContent=k;b.onclick=()=>st(k);$('alc').appendChild(b)});
+function st(n){it=n;$('q1t').textContent='Will '+n+' bring you money? (rent, income, business)';$('tip').textContent=tips[n]||'If it will bring in regular money, answer "Yes".';sh(1)}
+$('alg').onclick=()=>{const v=$('alx').value.trim();v?st(v):$('alx').focus()};$('alx').onkeydown=e=>{if(e.key==='Enter')$('alg').click()};
+document.querySelectorAll('#al1 .opt').forEach(b=>b.onclick=()=>{ea=b.dataset.e==='1';$('q2t').textContent='Over time, what will happen to the value of '+it+'?';sh(2)});
+document.querySelectorAll('#al2 .opt').forEach(b=>b.onclick=()=>{const v=b.dataset.v,d=$('vd');let w,r,c='good';
+ if(ea){d.textContent='Asset ✔';w=it+' brings you money. It is a true asset only if its monthly income is higher than its monthly costs. Check your numbers.';r='Money coming in = Asset.'}
+ else if(v==='up'){d.textContent='Asset ✔ (value asset)';w=it+' does not pay you monthly, but its value should rise. You only profit when you sell, and costs like tax and upkeep continue until then.';r='Rising value is an asset, but only on paper until you sell.'}
+ else{c='bad';d.textContent='Liability ✖';w=v==='same'?it+' earns nothing and its value does not grow. It only costs you.':it+' earns nothing and loses value. You lose both ways.';r='Money going out = Liability.'}
+ d.className='big '+c;$('why').textContent=w;$('rl').textContent=r;sh(3)});
+$('alr').onclick=()=>{$('alx').value='';sh(0)};
+
+const bk=[['Chai',15],['Samosa',15],['Auto ride (3 km)',60],['Petrol 1 L',100],['Biryani plate',200],['Movie ticket',250]];
+const cn=n=>n>=10?Math.floor(n)+'':n>=1?n.toFixed(1).replace(/\.0$/,''):n>=.1?n.toFixed(1):n>0?'<0.1':'0';
+[2,10,25,50,100].forEach(y=>{const b=document.createElement('button');b.className='chip';b.textContent=y+' yrs';b.dataset.y=y;b.onclick=()=>{$('iy').value=y;inf()};$('iyc').appendChild(b)});
+let running=false;
+function setL(n){[1,2,3].forEach(k=>$('l'+k).className=k===n?'on':'')}
+function dialTo(y){$('dial').style.setProperty('--p',y);$('dial').style.setProperty('--a',(y/100*270-135)+'deg')}
+function inf(){const y=+$('iy').value;
+ $('iyV').textContent=y+' years';$('iiV').textContent=$('ii').value+'%';$('dV').textContent=y;$('mY').textContent=2026+y;dialTo(y);
+ document.querySelectorAll('#iyc .chip').forEach(c=>c.setAttribute('aria-pressed',+c.dataset.y===y));
+ if(!running){$('mS').textContent='READY';setL(1)}}
+function showInf(){const a=+$('ia').value||0,y=+$('iy').value,i=+$('ii').value,f=Math.pow(1+i/100,y);
+ if(y)tween($('ib'),a/f);else{$('ib')._v=a;$('ib').textContent='Today: '+fmt(a)}
+ $('i1').innerHTML=y?`After ${y} years, your <b>${fmt(a)}</b> will only be worth about <b>${fmt(a/f)}</b> in today's money.`:'This is what your money is worth today.';
+ $('i2').innerHTML=y?`What <b>${fmt(a)}</b> buys today will cost <b>${fmt(a*f)}</b> then.`:'';
+ const mx=Math.max(...bk.map(x=>a/x[1]),.01);
+ $('ibk').innerHTML=bk.map(([n,p])=>`<div class="it"><div><b>${n}</b><span style="color:var(--mute)">${fmt(p)} → ${fmt(p*f)}</span></div><div><span>Now: ${cn(a/p)}</span><span>Then: ${cn(a/(p*f))}</span></div><div class="mb"><i style="width:${Math.max(3,a/p/mx*100)}%"></i></div><div class="mb t"><i style="width:${Math.max(3,a/(p*f)/mx*100)}%"></i></div></div>`).join('')}
+$('eng').onclick=()=>{if(running)return;running=true;const y=+$('iy').value,M=$('mach');
+ const end=()=>{M.classList.remove('shake');$('mS').textContent='COMPLETE';setL(3);$('mY').textContent=2026+y;dialTo(y);showInf();running=false;setTimeout(()=>{$('mpb').style.width='0'},700)};
+ if(still){end();return}
+ M.classList.add('shake');setL(2);const t0=performance.now(),D=2200;
+ (function st(t){const k=Math.min(1,(t-t0)/D),yy=Math.round(y*k);$('mpb').style.width=k*100+'%';$('mY').textContent=2026+yy;dialTo(yy);$('mS').textContent=k<.8?'CALCULATING':'PROJECTING';if(k<1)requestAnimationFrame(st);else end()})(t0)};
+['ia','iy','ii'].forEach(x=>$(x).addEventListener('input',inf));
+
+function sip(){const p=+$('sp').value||0,r=+$('sr').value,y=+$('sy').value,i=r/1200,n=y*12;
+ $('srV').textContent=r+'%';$('syV').textContent=y+' years';
+ const fv=i?p*((Math.pow(1+i,n)-1)/i)*(1+i):p*n,inv=p*n,pa=fv>0?inv/fv*100:100;
+ tween($('st'),fv);tween($('si'),inv);tween($('sg'),fv-inv);
+ setRing('s',inv,fv-inv);
+ $('sx').textContent=`After 6% inflation, this ${fmt(fv)} will feel like about ${fmt(fv/Math.pow(1.06,y))} in today's money.`}
+['sp','sr','sy'].forEach(x=>$(x).addEventListener('input',sip));
+
+const bfd=[['inc','Monthly income (₹)',30000],['rent','Rent / Housing',8000],['food','Food & Groceries',5000],['trav','Travel + Bills',3000],['emi','EMI / Loans',0],['fun','Fun, outings, shopping',6000],['sav','Savings / Investing',4000]];
+$('bf').innerHTML=bfd.map(([id,l,v],k)=>`<div class="r"${k===6?' style="margin:0"':''}><label for="${id}">${l}</label><input id="${id}" type="number" inputmode="numeric" value="${v}" min="0"></div>`).join('');
+function bud(){const v=id=>Math.max(0,+$(id).value||0),inc=v('inc'),nd=v('rent')+v('food')+v('trav')+v('emi'),wn=v('fun'),sv=v('sav'),left=inc-nd-wn-sv,pc=x=>inc>0?x/inc*100:0;
+ $('tb').innerHTML=[['Needs',nd,50,'--pri'],['Wants',wn,30,'--org'],['Savings',sv,20,'--mint']].map(r=>`<tr><td>${r[0]}<div class="mb"><i style="width:${Math.min(100,pc(r[1]))}%;background:var(${r[3]})"></i></div></td><td>${pc(r[1]).toFixed(0)}% (${fmt(r[1])})</td><td>${r[2]}%</td></tr>`).join('');
+ let m,l,c='good';if(inc<=0){c='warn';m='Enter your income';l='Start with your monthly income.'}
+ else if(left<0){c='bad';m='Overspending ✖';l=`You are spending ${fmt(-left)} more than you earn. Cut back on wants.`}
+ else if(pc(sv)>=20){m='Great budget ✔';l=`You are saving ${pc(sv).toFixed(0)}%. ${fmt(left)} is still unallocated.`}
+ else if(pc(sv)>=10){c='warn';m='Getting there';l=`You are saving ${pc(sv).toFixed(0)}%. You need ${fmt(inc*.2-sv)} more to hit 20%.`}
+ else{c='bad';m='Savings too low ✖';l=`Only ${pc(sv).toFixed(0)}% goes to savings. Move some money from wants to savings.`}
+ $('bv').textContent=m;$('bv').className='big '+c;$('bl').textContent=l;$('be').textContent=nd>0?`Emergency fund goal: ${fmt(nd*6)} (6 months of needs).`:''}
+bfd.forEach(x=>$(x[0]).addEventListener('input',bud));
+
+const tp=[['Money basics','Needs vs wants, income vs expenses.'],['Asset vs Liability','What fills your pocket and what drains it.',1],['Inflation','Why your money buys less over time.',1],['Budgeting','The 50/30/20 rule.',1],['Saving & Emergency fund','How much to keep for a rainy day.'],['SIP & Mutual funds','Small amounts, big growth.',1],['FD vs Equity','Safe vs growth, and when to use each.'],['Debt, EMI & Credit cards','How borrowing really works.'],['Insurance basics','Health and term cover, what you need.'],['Scam awareness','UPI, loan apps and fake investments.']];
+$('topics').innerHTML=tp.map((t,i)=>`<div class="tile" style="--c:var(${['--pri','--mint','--org','--pink'][i%4]});cursor:default"><b>${t[0]}${t[2]?'<span class="tag">Tool available</span>':''}</b><span>${t[1]}</span></div>`).join('');
+$('courses').innerHTML=[['Money Basics for Students','What to know before your first paycheck.','linear-gradient(135deg,#14302d,#25706a)'],['Start Investing with SIP','From zero to your first SIP, step by step.','linear-gradient(135deg,#14302d,#2f6660)'],['Budget Like a Pro','Take control of every rupee.','linear-gradient(135deg,#25706a,#14302d)']].map(c=>`<article class="vc"><div class="vt" style="background:${c[2]}"><span class="soon">COMING SOON</span><span class="wm">₹</span><span class="vh">${c[0]}</span><i class="pl"></i></div><div class="vm"><b>${c[0]}</b><span>${c[1]}</span><a class="btn o" href="https://instagram.com/hey.rithick" target="_blank" rel="noopener">Get notified on Instagram</a></div></article>`).join('');
+
+const RC=2*Math.PI*70;
+function ringBox(p,l){return `<div class="ringw"><svg viewBox="0 0 180 180" aria-hidden="true"><g transform="rotate(-90 90 90)" fill="none" stroke-width="24"><circle cx="90" cy="90" r="70" stroke="var(--soft)"/><circle id="${p}a" cx="90" cy="90" r="70" stroke="var(--pri)" stroke-dasharray="0 ${RC}"/><circle id="${p}b" cx="90" cy="90" r="70" stroke="var(--sun)" stroke-dasharray="0 ${RC}"/></g></svg><div class="rc"><small>${l}</small><b id="${p}t"></b></div></div>`}
+function setRing(p,a,b){const t=(a+b)||1,la=a/t*RC,lb=b/t*RC;$(p+'a').setAttribute('stroke-dasharray',la+' '+RC);$(p+'b').setAttribute('stroke-dasharray',lb+' '+RC);$(p+'b').setAttribute('stroke-dashoffset',-la)}
+function chipSet(id,items,def,fn){const el=$(id);el.dataset.v=def;items.forEach(([l,v])=>{const b=document.createElement('button');b.className='chip';b.textContent=l;b.setAttribute('aria-pressed',v==def);b.onclick=()=>{el.dataset.v=v;el.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c===b));fn()};el.appendChild(b)})}
+function calcEmi(){const P=+$('lp').value||0,R=+$('lr').value,Y=+$('ly').value,r=R/1200,n=Y*12,E=r?P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1):P/n,T=E*n;
+ $('lrV').textContent=R+'%';$('lyV').textContent=Y+(Y>1?' years':' year');tween($('lE'),E);tween($('mt'),T);$('lP').textContent=fmt(P);$('lI').textContent=fmt(T-P);setRing('m',P,T-P);
+ $('lx').textContent=P>0?`You will pay back ${(T/P).toFixed(2)} times the amount you borrow. A shorter tenure cuts the interest.`:''}
+function calcGst(){const p=+$('txP').value||0,d=+$('txD').value,g=+$('txR').dataset.v,inc=$('txM').dataset.v==='inc';$('txDV').textContent=d+'% off';
+ const a=p*(1-d/100),base=inc?a/(1+g/100):a,gs=inc?a-base:a*g/100;tween($('txO'),base+gs);$('txS').textContent=fmt(p-a);$('txB').textContent=fmt(base);$('txG').textContent=fmt(gs)}
+function calcSpl(){const t=+$('dvT').value||0,n=+$('dvN').value,k=+$('dvC').dataset.v,tot=t*(1+k/100);$('dvNV').textContent=n+(n>1?' people':' person');tween($('dvO'),tot/n);$('dvS').textContent=fmt(tot)}
+function calcGoal(){const G=+$('glA').value||0,n=+$('glM').value,R=+$('glR').value,i=R/1200,m=i?G*i/((Math.pow(1+i,n)-1)*(1+i)):G/n;
+ $('glMV').textContent=(n>=12?+(n/12).toFixed(1)+' yr, ':'')+n+' months';$('glRV').textContent=R+'%';tween($('glO'),m);
+ $('glN').textContent=R?`Plain saving needs ${fmt(G/n)} a month. Investing at ${R}% lowers it by ${fmt(G/n-m)}.`:`That is about ${fmt(m/30)} a day.`}
+chipSet('txR',[0,5,12,18,28].map(v=>[v+'%',v]),18,calcGst);chipSet('txM',[['GST is extra','add'],['GST is included','inc']],'add',calcGst);chipSet('dvC',[0,5,10,15].map(v=>[v?v+'%':'None',v]),0,calcSpl);
+[[['lp','lr','ly'],calcEmi],[['txP','txD'],calcGst],[['dvT','dvN'],calcSpl],[['glA','glM','glR'],calcGoal]].forEach(([ids,f])=>ids.forEach(x=>$(x).addEventListener('input',f)));
+$('sipR').innerHTML=ringBox('s','Total value');$('emiR').innerHTML=ringBox('m','Total payable');
+inf();sip();bud();calcEmi();calcGst();calcSpl();calcGoal();
+const h=location.hash.replace('#p-','');go(P.includes(h)?h:'home');
+
+let S=null,hist=[],busy=false;
+const SYS="You are Finwise AI, the assistant on Finwise Lab, a money-education website for students and first-time earners in India. Answer in simple, friendly English (or the language the student writes in), in under 120 words, with short examples in rupees. This is education only, not financial advice: never recommend specific stocks, funds or products, and remind users to verify details for big decisions. When relevant, point to the site tools: Asset or Liability checker, Inflation Simulator, SIP Calculator, Budget Lab. If the question is not about money, politely steer back to money topics.";
+(async()=>{try{S=await window.claude?.use('sample')}catch(e){}if(S)$('askBtn').hidden=false})();
+function addMsg(t,c){const d=document.createElement('div');d.className='m '+c;d.textContent=t;$('cm').appendChild(d);$('cm').scrollTop=1e9;return d}
+async function ask(q){q=q.trim();if(busy||!q||!S)return;busy=true;$('cs').disabled=true;$('cx').value='';document.querySelectorAll('.cc').forEach(x=>x.remove());
+ addMsg(q,'u');const out=addMsg('Thinking…','a');hist.push({role:'user',content:q});
+ const turns=hist.slice(-7).map((m,i)=>i===0?{role:'user',content:SYS+'\n\nStudent question: '+m.content}:m);
+ try{const r=await S(turns,{cache:false,onText:({text})=>{out.textContent=text;$('cm').scrollTop=1e9}});out.textContent=r.text;hist.push({role:'assistant',content:r.text})}
+ catch(e){hist.pop();out.textContent=e&&e.code==='not_granted'?'Please allow the chat to run, then ask again.':e&&e.code==='rate_limited'?'Too many questions too fast. Please wait a moment.':'Something went wrong. Please try again.'}
+ busy=false;$('cs').disabled=false;$('cx').focus()}
+$('askBtn').onclick=()=>{$('chat').hidden=false;$('askBtn').hidden=true;$('cx').focus()};
+$('cc').onclick=()=>{$('chat').hidden=true;$('askBtn').hidden=false};
+$('cs').onclick=()=>ask($('cx').value);$('cx').onkeydown=e=>{if(e.key==='Enter')ask($('cx').value)};
+document.querySelectorAll('.cc').forEach(b=>b.onclick=()=>ask(b.textContent));
+
+const sd=$('side'),sc=$('scrim');function openSB(){sd.classList.add('open');sc.hidden=false}function closeSB(){sd.classList.remove('open');sc.hidden=true}
+$('burger').onclick=openSB;sc.onclick=closeSB;
+document.addEventListener('click',e=>{if(e.target.closest('#side [data-go]'))closeSB()});
+
+const SV={q2:[['Very easy',0],['Somewhat easy',0],['Neither easy nor difficult',62.5],['Somewhat difficult',25],['Very difficult',12.5]],
+ch:[['Loans / EMIs',50],['Saving money',37.5],['Unexpected expenses',37.5],['Investments',25],['Medical expenses',25],["Children's education",12.5],['Insurance',12.5],['Managing monthly expenses',12.5],['Retirement planning',0],['Taxes',0]],
+hard:[['Saving',37.5],['Investing',37.5],['Budgeting',25],['Loans / EMIs',25],['Managing unexpected expenses',25]],
+trk:[['Notebook / Diary',37.5],['Mobile app',37.5],['Bank app',25],["I don't track",12.5],['Excel / Google Sheets',0]],
+bar:[['Too many financial options',37.5],['Unexpected expenses',25],['Difficult to track expenses',12.5],['Lack of time',12.5],['Lack of reliable guidance',12.5],['Family responsibilities',12.5],['Other',12.5]],
+age:[['Loans / EMIs',60,33.3],['Saving money',40,33.3],['Investments',40,0],['Unexpected expenses',40,33.3],['Medical expenses',20,33.3],["Children's education",0,33.3],['Insurance',20,0]]};
+const pf=v=>(+v.toFixed(1))+'%';
+const hb=(d,top,mx=Math.max(...d.map(r=>r[1])))=>d.map((r,i)=>`<div class="hb${i<top?' top':''}"><span>${r[0]}</span><div class="tr"><i data-w="${r[1]/mx*100}"></i></div><b>${pf(r[1])}</b></div>`).join('');
+$('c-q2').innerHTML=hb(SV.q2,0,70);$('c-ch').innerHTML=hb(SV.ch,3);$('c-hard').innerHTML=hb(SV.hard,2);$('c-trk').innerHTML=hb(SV.trk,2);$('c-bar').innerHTML=hb(SV.bar,1);
+$('c-age').innerHTML=SV.age.map(r=>`<div class="ag"><div class="al">${r[0]}</div><div class="hb"><span>25-35</span><div class="tr"><i data-w="${r[1]/60*100}"></i></div><b>${pf(r[1])}</b></div><div class="hb"><span>36-45</span><div class="tr"><i class="n" data-w="${r[2]/60*100}"></i></div><b>${pf(r[2])}</b></div></div>`).join('');
+function bars(){const all=document.querySelectorAll('#survey .tr i');all.forEach(i=>i.style.width='0');requestAnimationFrame(()=>requestAnimationFrame(()=>all.forEach(i=>i.style.width=i.dataset.w+'%')))}
+
+const QS=[
+{k:'q1',t:'What is your age group?',h:'Mark only one',o:['Below 25','25-35','36-45','46-55','Above 55','Prefer not to say']},
+{k:'q2',t:'How difficult is it for you to manage your monthly expenses?',h:'Mark only one',o:['Very easy','Somewhat easy','Neither easy nor difficult','Somewhat difficult','Very difficult']},
+{k:'q3',t:'What is your biggest financial challenge?',h:'Mark only one',o:['Managing monthly expenses','Saving money','Investments','Loans / EMIs',"Children's education",'Medical expenses','Insurance','Retirement planning','Taxes','Unexpected expenses','Other']},
+{k:'q4',t:'Which financial areas do you find difficult to manage or understand?',h:'Mark only one',o:['Budgeting','Saving','Investing','Loans / EMIs','Insurance','Taxes','Retirement planning','Managing unexpected expenses','Understanding financial products','None of these']},
+{k:'q5',t:'How do you currently track your expenses?',h:'Mark only one',o:['Notebook / Diary','Excel / Google Sheets','Mobile app','Bank app',"I don't track them",'Other']},
+{k:'q6',t:'What makes financial planning difficult for you?',h:'Check all that apply',m:1,o:['Lack of financial knowledge','Lack of time','Difficult to track expenses',"Don't know where to start",'Too many financial options','Unexpected expenses','Family responsibilities','Lack of reliable guidance',"I don't find financial planning difficult",'Other']},
+{k:'q7',t:'What is one financial problem you wish was easier for you? *',h:'Required',x:1},
+{k:'q8',t:'How does this problem affect your day-to-day financial decisions?',h:'Optional',x:1}];
+$('sv-form').innerHTML=QS.map((q,i)=>`<fieldset class="card q"><legend><span class="qn">Q${i+1}</span> ${q.t}</legend><p class="note" style="margin:0 0 6px">${q.h}</p>${q.x?`<textarea id="${q.k}" rows="3" maxlength="500" aria-label="${q.t}"></textarea>`:q.o.map(o=>`<label class="op"><input type="${q.m?'checkbox':'radio'}" name="${q.k}" value="${o.replace(/"/g,'&quot;')}"><span>${o}</span></label>`).join('')}</fieldset>`).join('')+'<p id="sv-err" class="bad" style="font-weight:700;margin:0 0 8px"></p><button class="btn" id="sv-go">Submit survey</button><p class="note">Anonymous. Please do not include names, phone numbers or bank details in your answers.</p>';
+$('sv-go').onclick=async()=>{const a={};
+ QS.forEach(q=>{if(q.x)a[q.k]=($(q.k).value||'').trim();else{const c=[...document.querySelectorAll(`input[name=${q.k}]:checked`)].map(x=>x.value);a[q.k]=q.m?c:(c[0]||'')}});
+ if(!a.q7){$('sv-err').textContent='Please answer question 7, it is required.';$('q7').focus();return}
+ $('sv-err').textContent='';$('sv-go').disabled=true;let ok=false;
+ try{const db=await window.claude?.use('db');if(db){await db.collection('responses').add({at:Date.now(),a});ok=true}}catch(e){}
+ const txt='Finwise Lab survey answers\n\n'+QS.map((q,i)=>`Q${i+1}. ${q.t}\n${Array.isArray(a[q.k])?a[q.k].join(', '):a[q.k]||'-'}`).join('\n\n');
+ const d=$('sv-done');$('sv-form').hidden=true;d.hidden=false;
+ d.innerHTML=ok?'<h2>Thank you!</h2><p style="margin:0">Your answers were saved anonymously. You are helping us build better money lessons.</p>':'<h2>Thank you! One last step</h2><p>Your answers are ready. Copy them and send them to Finwise Lab on Instagram.</p><textarea id="sv-txt" rows="7" readonly></textarea><button class="btn" id="sv-copy" style="margin-top:10px">Copy and open Instagram</button><p class="note">No name or phone number is included.</p>';
+ if(!ok){$('sv-txt').value=txt;$('sv-copy').onclick=async()=>{try{await navigator.clipboard.writeText(txt)}catch(e){$('sv-txt').select()}window.open('https://ig.me/m/hey.rithick','_blank','noopener')}}
+ scrollTo(0,0)};
+</script>
+</body>
+</html>
